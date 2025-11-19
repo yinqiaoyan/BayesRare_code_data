@@ -56,7 +56,7 @@ print(res_BayesRare$CI_values_for_sig)
 
 
 ##############################################################
-#####         Figure 6(a) Cell type annotations          #####
+#####         Figure 4(a) Cell type annotations          #####
 ##############################################################
 plot_color <- c(
   "#c2b2d2", "#c63a32", "#3977af", "#f08536", "#f6bd82", "#4f9b6c", "#84584e", 
@@ -89,13 +89,13 @@ p <- ggplot(umap_df_plot, aes(x = UMAP1, y = UMAP2, color = factor(Group))) +
   ) +
   guides(color = guide_legend(title = NULL, override.aes = list(size = 6)))
 
-ggsave("../figures/figure6a.png", p, width = 12, height = 9, dpi = 100)
+ggsave("../figures/figure4a.png", p, width = 12, height = 9, dpi = 100)
 
 
 
 
 ##############################################################
-#####                   Figure 6(b)-(h)                  #####
+#####                   Figure 4(b)-(h)                  #####
 ##############################################################
 cellsius_res  = read.table("../input_data/res_cellsius.txt", header = F, sep = "\t", stringsAsFactors = FALSE)
 gapclust_res  = read.csv("../input_data/res_gapclust.csv")
@@ -173,7 +173,7 @@ for (vv in tmpLetter){
       legend.key.size   = unit(3, "line")
     )
   
-  ggsave(paste0("../figures/figure6", vv, ".png"), p, width = 12, height = 9, dpi = 100)
+  ggsave(paste0("../figures/figure4", vv, ".png"), p, width = 12, height = 9, dpi = 100)
 }
 
 
