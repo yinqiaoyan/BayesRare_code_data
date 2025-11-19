@@ -53,7 +53,7 @@ cat("Number of true rare cells:", sum(total_labels %in% true_rare_types), " \n")
 
 
 ##############################################################
-#####         Figure 4(a) Cell type annotations          #####
+#####         Figure 5(a) Cell type annotations          #####
 ##############################################################
 plot_color <- c(
   "#c2b2d2", "#c63a32", "#3977af", "#f08536", "#f6bd82", "#4f9b6c", "#84584e", 
@@ -94,13 +94,13 @@ p <- ggplot(umap_df_plot, aes(x = UMAP1, y = UMAP2, color = factor(Group))) +
   ) +
   guides(color = guide_legend(title = NULL, override.aes = list(size = 6)))
 
-ggsave("../figures/figure4a.png", p, width = 12, height = 9, dpi = 100)
+ggsave("../figures/figure5a.png", p, width = 12, height = 9, dpi = 100)
 
 
 
 
 ##############################################################
-#####                   Figure 4(b)-(f)                  #####
+#####                   Figure 5(b)-(f)                  #####
 ##############################################################
 giniclust_res = read.csv("../input_data/res_GiniClust.csv")
 scissors_res  = read.csv("../input_data/res_SCISSORS.csv")
@@ -167,7 +167,7 @@ for (vv in tmpLetter){
       legend.key.size   = unit(3, "line")
     )
   
-  ggsave(paste0("../figures/figure4", vv, ".png"), p, width = 12, height = 9, dpi = 100)
+  ggsave(paste0("../figures/figure5", vv, ".png"), p, width = 12, height = 9, dpi = 100)
 }
 
 

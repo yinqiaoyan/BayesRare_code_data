@@ -1,5 +1,5 @@
 ##############################################################
-#################### Human breast cancer #####################
+####################      Parkinson      #####################
 ##############################################################
 
 ########################## Note ##############################
@@ -25,11 +25,11 @@ print(getwd())
 
 ## Read in data
 expr_pc = read.csv("../input_data/X_pca_py.csv")  # python preprocessing code
-meta_data_all = read.csv("../input_data/raw_metadata.csv")
+meta_data_all = read.csv("../input_data/raw_metadata.tsv", sep = "\t")
 clust_res_all = read.csv("../input_data/scCAD_detection_results.tsv", sep = "\t")
 
-colnames(meta_data_all)[colnames(meta_data_all) == "Patient"]    <- "donor_id"
-colnames(meta_data_all)[colnames(meta_data_all) == "SubCluster"] <- "cell_type"
+colnames(meta_data_all)[colnames(meta_data_all) == "patient"]       <- "donor_id"
+colnames(meta_data_all)[colnames(meta_data_all) == "cell_ontology"] <- "cell_type"
 
 rare_candidates_id = which(clust_res_all$rare_subcluster_id != -1)
 
@@ -38,19 +38,25 @@ res_BayesRare = BayesRare_train(X_list = out_proc$X_list,
                                 K_init = out_proc$K_init, 
                                 mu_gk_fixed = out_proc$mu_gk_fixed, 
                                 sigmasq_gk_fixed = out_proc$sigmasq_gk_fixed,
-                                random_seed = 214,
+                                patient_group_ids = 7:11,
+                                control_group_ids = 1:6,
+                                random_seed = 55,
+                                do_test = TRUE,
                                 verbose_time = TRUE, verbose_em = TRUE)
 
 
-true_rare_types = c("pDC", "Mast")
+true_rare_types = c("CADPS2+ neurons", "DaNs", "Ependymal", "GABA")
 total_labels = meta_data_all$cell_type[res_BayesRare$rare_ids]
 cat("Number of detected rare cells:", length(res_BayesRare$rare_ids), " \n")
 cat("Number of true rare cells:", sum(total_labels %in% true_rare_types), " \n")
 
+print(res_BayesRare$p_values)
+print(res_BayesRare$CI_values_for_sig)
+
 
 
 ##############################################################
-#####         Figure 3(a) Cell type annotations          #####
+#####         Figure 6(a) Cell type annotations          #####
 ##############################################################
 plot_color <- c(
   "#c2b2d2", "#c63a32", "#3977af", "#f08536", "#f6bd82", "#4f9b6c", "#84584e", 
@@ -83,13 +89,13 @@ p <- ggplot(umap_df_plot, aes(x = UMAP1, y = UMAP2, color = factor(Group))) +
   ) +
   guides(color = guide_legend(title = NULL, override.aes = list(size = 6)))
 
-ggsave("../figures/figure3a.png", p, width = 12, height = 9, dpi = 100)
+ggsave("../figures/figure6a.png", p, width = 12, height = 9, dpi = 100)
 
 
 
 
 ##############################################################
-#####                   Figure 3(b)-(h)                  #####
+#####                   Figure 6(b)-(h)                  #####
 ##############################################################
 cellsius_res  = read.table("../input_data/res_cellsius.txt", header = F, sep = "\t", stringsAsFactors = FALSE)
 gapclust_res  = read.csv("../input_data/res_gapclust.csv")
@@ -117,7 +123,7 @@ for (vv in tmpLetter){
   } else if (vv == "f") {
     ## SCISSORS (f)
     umap_df_plot$Group = "abundant cells"
-    umap_df_plot$Group[umap_df$X %in% scissors_res$Cell] = "rare cells"
+    umap_df_plot$Group[umap_df$X %in% scissors_res$Cell] = "rare cells" 
   } else if (vv == "g") {
     ## scCAD (g)
     umap_df_plot$Group = "abundant cells"
@@ -127,6 +133,7 @@ for (vv in tmpLetter){
     umap_df_plot$Group = "abundant cells"
     umap_df_plot$Group[res_BayesRare$rare_ids] = "rare cells"
   }
+  
   
   ## abundant vs rare
   p <- ggplot(umap_df_plot, aes(x = UMAP1, y = UMAP2)) +
@@ -150,8 +157,8 @@ for (vv in tmpLetter){
     theme(
       legend.position = "right",
       plot.title = element_text(hjust = 0.5),
-      panel.background = element_blank(), 
-      plot.background  = element_blank()  
+      panel.background = element_blank(),  
+      plot.background  = element_blank()   
     ) +
     scale_color_manual(
       name   = NULL,
@@ -162,11 +169,11 @@ for (vv in tmpLetter){
     guides(color = guide_legend(override.aes = list(size = 10))) +
     theme(
       legend.position   = "right",
-      legend.text       = element_text(size = 34),
+      legend.text       = element_text(size = 34), 
       legend.key.size   = unit(3, "line")
     )
   
-  ggsave(paste0("../figures/figure3", vv, ".png"), p, width = 12, height = 9, dpi = 100)
+  ggsave(paste0("../figures/figure6", vv, ".png"), p, width = 12, height = 9, dpi = 100)
 }
 
 
