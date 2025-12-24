@@ -135,7 +135,7 @@ res_BayesRare = BayesRare_train(X_list=X_list,
 
 
 ##############################################################
-#####        Figure S1(c)1 Cell type annotations         #####
+#####        Figure S2(c)1 Cell type annotations         #####
 ##############################################################
 cell_type_labels = NULL
 for (d in 1:8) {
@@ -193,13 +193,13 @@ p <- ggplot(df_all, aes(x = X1, y = X2, color = factor(true_type))) +
   guides(color = guide_legend(title = NULL, override.aes = list(size = 7))) +
   coord_cartesian(xlim = c(-11, 15), ylim = c(-5, 15))
 
-ggsave("../figures/figureS1c1.png", p, width = 11, height = 9, dpi = 100)
+ggsave("../figures/figureS2c1.png", p, width = 11, height = 9, dpi = 100)
 
 
 
 
 ##############################################################
-#####   Figure S1(c)2 Initial rare cell identification   #####
+#####   Figure S2(c)2 Initial rare cell identification   #####
 ##############################################################
 df_abundant = as.data.frame(centers_abundant)
 df_all_abund = data.frame(rbind(do.call(rbind, X_list), df_abundant))
@@ -252,13 +252,13 @@ p <- ggplot(df_all_abund, aes(x = X1, y = X2, color = type)) +
   guides(color = guide_legend(override.aes = list(size = 7))) +  
   coord_cartesian(xlim = c(-11, 15), ylim = c(-5, 15))
 
-ggsave("../figures/figureS1c2.png", p, width = 12, height = 9, dpi = 100)
+ggsave("../figures/figureS2c2.png", p, width = 12, height = 9, dpi = 100)
 
 
 
 
 ##############################################################
-#####           Figure S1(c)3 BayesRare results          #####
+#####           Figure S2(c)3 BayesRare results          #####
 ##############################################################
 umap_df_plot = as.data.frame(expr_pc_data)
 tmpLabels = unlist(res_BayesRare$z_res)
@@ -298,7 +298,7 @@ p <- ggplot(umap_df_plot, aes(x = V1, y = V2, color = factor(Group))) +
   guides(color = guide_legend(title = NULL, override.aes = list(size = 7))) +
   coord_cartesian(xlim = c(-11, 15), ylim = c(-5, 15))
 
-ggsave("../figures/figureS1c3.png", p, width = 11, height = 9, dpi = 100)
+ggsave("../figures/figureS2c3.png", p, width = 11, height = 9, dpi = 100)
 
 
 
